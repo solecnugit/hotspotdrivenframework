@@ -1,0 +1,33 @@
+{
+    "paths": {
+      "benchpath":"Samples",
+      "dynamoriolibpath": "Dynamorio_lib",
+      "outpath": "Outputs",
+      "dynamoriopath":"/home/wlmu/DynamoRIO"
+    },
+    "application":{
+      "application1":"BubbleSort1",
+      "application2":"BubbleSort2",
+      "run_command1":"",
+      "run_command2":""
+    },
+    "subfile":"bubble4",
+    "hotspot_selection_threshold":"70%",
+    "runmode":{
+      "function_name":"true",
+      "logical_address":"true"
+    },
+    "logical_address":{
+      "application1":{
+        "instrumentation":"true",
+        "start":"c08",
+        "end":"cbc"
+      },
+      "application2":{
+        "instrumentation":"true",
+        "start":"b80",
+        "end":"d7c"
+      }
+  }
+}
+  

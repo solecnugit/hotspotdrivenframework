@@ -1,0 +1,7 @@
+*.o
+*.d
+*.so
+*.pyc
+Dynamorio_lib/build
+Outputs
+__pycache__

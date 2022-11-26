@@ -11,8 +11,8 @@
       "run_command1":"",
       "run_command2":""
     },
-    "subfile":"bubble4",
-    "hotspot_selection_threshold":"70%",
+    "subfile":"bubble1",
+    "hotspot_selection_threshold":"90%",
     "runmode":{
       "function_name":"true",
       "logical_address":"true"

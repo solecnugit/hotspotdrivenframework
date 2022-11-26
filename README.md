@@ -9,10 +9,32 @@
 - [screen](https://linux.die.net/man/1/screen)
 - [Cmake](https://cmake.org/files/)
 - python3 (pandas/numpy)
+  在运行Linux perf之前需要如下命令：
+  ```js
+  sudo sysctl -w kernel.perf_event_paranoid=-1
+  ```
 
 ---
 
-## 如何使用
+## 使用方法
+
+### 利用docker镜像启动应用程序(可跳过)
+
+构建docker镜像
+
+```js
+make build
+```
+运行docker镜像
+
+```js
+make run
+```
+下载并解压DynamoRIO
+
+```js
+make tools
+```
 
 ### 编译被分析的可执行文件
 
@@ -68,14 +90,13 @@ make
 
 ---
 
-
 ### 运行
 
 ```js
 $ ./run-framework.sh
 $ screen -ls 
     No Sockets found in /run/screen/..
-$ ./output-report.sh
+$ ./output- report.sh
 ```
 
 在命令行输入`./run-framework.sh`就可以运行自动化框架，当脚本运行完成后（`screen -ls`显示`No Sockets found in /run/screen/..`），输入`./output- report.sh`命令，可以在之前指定目录输出总结性报告`output_report.out`。这两个脚本中默认的json为config.json，更改脚本中的config_json变量，可以更改全局的配置文件。

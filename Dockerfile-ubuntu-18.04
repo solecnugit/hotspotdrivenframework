@@ -1,0 +1,22 @@
+FROM ubuntu:18.04
+RUN apt-get update && apt-get install sudo
+RUN apt-get update && apt-get install -y \
+    gfortran \
+	gcc \
+    g++ \
+    python \
+    git \
+    wget \
+    vim \
+    screen \
+    cmake \
+	python3-pip \
+	linux-tools-common \
+	linux-tools-generic \
+	linux-cloud-tools-generic \
+    linux-tools-5.4.0-131-generic\
+    linux-cloud-tools-5.4.0-131-generic\
+ && rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install --no-cache-dir  --upgrade pip && \
+    pip3 install --no-cache-dir pandas

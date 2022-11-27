@@ -101,6 +101,8 @@ $ ./output- report.sh
 
 在命令行输入`./run-framework.sh`就可以运行自动化框架，当脚本运行完成后（`screen -ls`显示`No Sockets found in /run/screen/..`），输入`./output- report.sh`命令，可以在之前指定目录输出总结性报告`output_report.out`。这两个脚本中默认的json为config.json，更改脚本中的config_json变量，可以更改全局的配置文件。
 
+如果要复现论文中的结果，需要将构建好的SPEC CPU2017基准测试的可执行文件放到特定目录中(参考[ Avoiding runcpu](https://www.spec.org/cpu2017/Docs/runcpu-avoidance.html))，然后配置相关json文件，其余步骤同上。
+
 ---
 
 ## 输出结果

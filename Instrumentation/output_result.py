@@ -16,15 +16,11 @@ class Output_Identified_Hotspots():
             self.config_data = json.load(myconfig)
         output_file=self.config_data["subfile"]
         self.output_path="./"+self.config_data["paths"]["outpath"] +"/"+output_file
-    def obtain_absolute_runtime(self,stat_path):
-        runtime = 0
-        for line in open(stat_path):
-            if "seconds time elapsed" in line:
-                tmp = line[0:line.find("s") - 1]
-                runtime = float(tmp[tmp.rfind(" ") + 1:])
-        return str(runtime)
+    def obtain_absolute_runtime(self,runtime_path):
+        file=open(runtime_path)
+        return file.read()
     def return_runtime(self,app_name):
-        return app_name+": "+self.obtain_absolute_runtime(self.output_path+"/profile-data/"+app_name+".perf.stat.out")
+        return app_name+": "+self.obtain_absolute_runtime(self.output_path+"/profile-data/"+app_name+".runtime.out")
     def obtain_identified_hotspots(self,json_path):
         with open(json_path, 'r') as json_file:
             jsons = json.load(json_file)

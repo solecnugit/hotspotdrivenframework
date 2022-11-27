@@ -67,8 +67,8 @@ class Output_Identified_Hotspots():
     #初步获取热点数据
     def get_hotspot_object(self,app_name):
         record_path=self.output_perf_file+app_name+".perf.report.csv"
-        stat_path=self.output_perf_file+app_name+".perf.stat.out"
-        return Obtain_Hotspot(record_path,stat_path)
+        runtime=self.output_perf_file+app_name+".runtime.out"
+        return Obtain_Hotspot(record_path,runtime)
     def main(self):
         warnings.filterwarnings("ignore")
         self.get_opt()

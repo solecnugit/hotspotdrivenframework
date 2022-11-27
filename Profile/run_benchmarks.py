@@ -2,6 +2,7 @@ import os
 import sys, getopt
 import json
 import argparse
+import time
 class Run_Perf():
     def __init__(self):
         self.config_data={}
@@ -24,8 +25,12 @@ class Run_Perf():
             os.system("mkdir "+self.output_disassemble_file)
     #运行具体perf命令
     def perf_command(self,app_name,app_cmd):
-        stat_cmd= "perf stat -o "+self.output_perf_file+app_name  +".perf.stat.out "+ app_cmd
-        os.system(stat_cmd)
+        start=time.perf_counter()
+        os.system(app_cmd)
+        end=time.perf_counter()
+        file=open(self.output_perf_file+app_name+".runtime.out","w")
+        file.write(str(end-start))
+        file.close()
         run_record="perf record  " + app_cmd 
         os.system(run_record)
         record_cmd= "perf report -F overhead,symbol --field-separator=,>"+self.output_perf_file+app_name+".perf.report.csv"

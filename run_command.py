@@ -23,7 +23,7 @@ class Run():
     #运行perf命令
     def run_perf(self,print_it):
         print("Getting performance data ......")
-        run_perf_command="python3 ./Profile/run_perf.py -c "+ self.myjson 
+        run_perf_command="python3 ./Profile/run_benchmarks.py -c "+ self.myjson 
         if print_it:
             print("Run command: "+run_perf_command)
         os.system(run_perf_command)

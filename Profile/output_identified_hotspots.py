@@ -34,12 +34,7 @@ class Output_Identified_Hotspots():
             json.dump(myjson, write_file, indent=4)
     #为df添加新的一行
     def append_row(self,frame,sym,overhead,runtime,kernel):
-        frame = frame.append(pd.DataFrame(data={
-            "symbol": sym,
-            "overhead(%)": overhead,
-            "runtime(sec)": runtime,
-            "kernel":kernel
-        }))
+        frame.loc[len(frame.index)] = [sym,overhead,kernel,runtime] 
         return frame
     #根据热点选择算法，从热点列表里面进行初步选取“确定”热点
     def get_identified_hotspot(self,overhead_list):

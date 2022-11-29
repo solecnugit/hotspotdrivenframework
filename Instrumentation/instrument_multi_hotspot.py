@@ -29,6 +29,14 @@ class Instrument():
         data = json.load(f)
         f.close()
         return [i for i in data]
+    def obtain_screen_label_list(self):
+        screen_label_list=[]
+        for app in ["application1","application2"]:
+            app_name=self.config_data["application"][app]
+            hotspot_lists=self.load_hotspot_list(app_name)
+            for hotspot in hotspot_lists:
+                screen_label_list.append(app_name+"_"+hotspot)
+        return screen_label_list
     def run_app(self,app,run_file):
         drpath=self.config_data["paths"]["dynamoriopath"]
         #drlibpath="./Dynamorio_lib/build/bin/libfunction_instrument.so"

@@ -9,11 +9,11 @@
 - [screen](https://linux.die.net/man/1/screen)
 - [Cmake](https://cmake.org/files/)
 - python3 (pandas/numpy)
-  在运行Linux perf之前需要如下命令：
+- DynamoRIO对glibc2.35+的支持存在一定问题，因此要选择glibc2.34及以下的linux操作系统。
+- 在运行Linux perf之前需要如下命令：
   ```js
   sudo sysctl -w kernel.perf_event_paranoid=-1
   ```
-
 ---
 
 ## 使用方法
@@ -94,12 +94,9 @@ make
 
 ```js
 $ ./run-framework.sh
-$ screen -ls 
-    No Sockets found in /run/screen/..
-$ ./output- report.sh
 ```
 
-在命令行输入`./run-framework.sh`就可以运行自动化框架，当脚本运行完成后（`screen -ls`显示`No Sockets found in /run/screen/..`），输入`./output- report.sh`命令，可以在之前指定目录输出总结性报告`output_report.out`。这两个脚本中默认的json为config.json，更改脚本中的config_json变量，可以更改全局的配置文件。
+在命令行输入`./run-framework.sh`就可以运行自动化框架，当脚本运行完成后有关结果就会输出到对应目录。这两个脚本中默认的json为config.json，更改脚本中的config_json变量，可以更改全局的配置文件。
 
 如果要复现论文中的结果，需要将构建好的SPEC CPU2017基准测试的可执行文件放到特定目录中(参考[ Avoiding runcpu](https://www.spec.org/cpu2017/Docs/runcpu-avoidance.html))，然后配置相关json文件，其余步骤同上。
 
@@ -111,4 +108,4 @@ $ ./output- report.sh
 - **instrument-data-logical-address** :按逻辑地址插桩获取特定区间的指令特征,该文件夹下文件名称为application_range.csv/application_range_simd.csv
 - **application1_identified_hotspots.json** :输出可执行文件1的“关键”热点函数。
 - **application2_identified_hotspots.json** :输出可执行文件2的“关键”热点函数。
-- **output_report.out** :输出总结性报告。
+- **report.out** :输出总结性报告。

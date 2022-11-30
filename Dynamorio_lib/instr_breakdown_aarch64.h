@@ -23,6 +23,7 @@ enum INSTR_KIND {
     SHIFT,
     CONDITIONAL_BRANCH,
     UNCONDITIONAL_DIRECT_BRANCH,
+    SIMD_INSTR,
     REST_INSTR,
     INDIRCT_BRANCH,
     BRANCH_INSTR,
@@ -164,7 +165,7 @@ static void get_instr_array_value(uint64 instr_kind_array[]){
     instr_kind_array[INDIRCT_BRANCH]=instr_kind_array[INDIRECT_CALL]+instr_kind_array[INDIRECT_JMP]+instr_kind_array[INDIRECT_RET];
     instr_kind_array[BRANCH_INSTR]=instr_kind_array[UNCONDITIONAL_DIRECT_BRANCH]+instr_kind_array[CONDITIONAL_BRANCH]+instr_kind_array[INDIRCT_BRANCH];
     instr_kind_array[OPERATION_INSTR]=instr_kind_array[BINARY]+instr_kind_array[LOGICAL]+instr_kind_array[SHIFT];
-    instr_kind_array[TOTAL_INSTR]=instr_kind_array[REST_INSTR]+instr_kind_array[BRANCH_INSTR]+instr_kind_array[OPERATION_INSTR]+instr_kind_array[DATAXFER]+instr_kind_array[LOAD_STORE];
+    instr_kind_array[TOTAL_INSTR]=instr_kind_array[REST_INSTR]+instr_kind_array[BRANCH_INSTR]+instr_kind_array[OPERATION_INSTR]+instr_kind_array[DATAXFER]+instr_kind_array[LOAD_STORE]+instr_kind_array[SIMD_INSTR];
 }
 int
 instr_category(instr_t *instr)
@@ -176,6 +177,9 @@ instr_category(instr_t *instr)
         instr_kind = INDIRECT_JMP;
     } else if (instr_is_return(instr)) {
         instr_kind = INDIRECT_RET;
+    }else if (myinstr_is_simd(instr))
+    {
+        instr_kind = SIMD_INSTR;
     }else if (my_instr_is_store_load(instr)){
         instr_kind = LOAD_STORE;
     }else if (instr_is_cbr(instr)) {

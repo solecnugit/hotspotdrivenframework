@@ -22,7 +22,6 @@ class Logical():
     def run_app(self,runfile,app):
         app_name=self.config_data["application"][app]
         drpath=self.config_data["paths"]["dynamoriopath"]
-        #drlibpath="./Dynamorio_lib/build/bin/libfunction_instrument_range.so"
         drlibpath=self.config_data["paths"]["dynamoriolibpath"] + "/build/bin/libfunction_instrument_range.so"
         logical_range=str(self.config_data["logical_address"][app]["start"])+":"+str(self.config_data["logical_address"][app]["end"])
         screen_label=app_name+"_"+logical_range

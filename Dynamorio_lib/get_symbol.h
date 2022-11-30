@@ -148,8 +148,6 @@ get_main_module_symbol_head(const char *symbol_name)
     return (uint64)physical_address_symbol_head;
 }
 
-
-
 bool tag_is_main_module(void *tag){
     module_data_t *main_module = dr_get_main_module();
     return dr_module_contains_addr(main_module, dr_fragment_app_pc(tag));

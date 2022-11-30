@@ -31,7 +31,6 @@ class Instrument():
         return [i for i in data]
     def run_app(self,app,run_file):
         drpath=self.config_data["paths"]["dynamoriopath"]
-        #drlibpath="./Dynamorio_lib/build/bin/libfunction_instrument.so"
         drlibpath=self.config_data["paths"]["dynamoriolibpath"] + "/build/bin/libfunction_instrument.so"
         hotspot_lists=self.load_hotspot_list(app)
         for hotspot in hotspot_lists:
@@ -39,11 +38,6 @@ class Instrument():
             dynamorio_cmd=drpath +"/bin64/drrun -c " + drlibpath + " -output " +self.dynamorio_output + " -app "+app + " -function "+ hotspot + " -- "+ run_file
             cmd = "screen -dmS " + screen_label + " bash -c " +'"'+ dynamorio_cmd +'"'
             os.system(cmd)
-            #print(cmd)
-            '''
-            screen -dmS BubbleSort1_BubbleSort1 bash -c "/home/wlmu/DynamoRIO/bin64/drrun -c ./Dynamorio_lib/build/bin/libfunction_instrument.so 
-            -output ./Outputs/bubble/instrument-data -app BubbleSort1 -function BubbleSort1 -- ./Samples/BubbleSort1 "
-            '''
     def main(self):
         self.get_opt()
         self.mkdir_output()

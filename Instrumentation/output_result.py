@@ -68,8 +68,6 @@ class Output_Identified_Hotspots():
                     file_simd_path=instrument_path+app_name+"_"+hotspot+"_simd.csv"
                     print(self.obtain_instruction_characterization(file_path),file=data)
                     print("\n",file=data)
-                    print(self.obtain_instruction_characterization(file_simd_path),file=data)
-                    print("\n",file=data)
     def generate_instructions_characterization_both_apps(self,public_list,data):
         instrument_path=self.output_path+"/instrument-data/"
         app1=self.config_data["application"]["application1"]
@@ -79,15 +77,10 @@ class Output_Identified_Hotspots():
         for hotspot in public_list:
             print(apps+" "+hotspot,file=data)
             df1=self.obtain_instruction_characterization(instrument_path+self.config_data["application"]["application1"]+"_"+hotspot+".csv")
-            df1_simd=self.obtain_instruction_characterization(instrument_path+self.config_data["application"]["application1"]+"_"+hotspot+"_simd.csv")
             df1.columns=[app1+",number",app1+",ratio"]
-            df1_simd.columns=[app1+",simd_number",app1+",simd_ratio"]
             df2=self.obtain_instruction_characterization(instrument_path+self.config_data["application"]["application2"]+"_"+hotspot+".csv")
-            df2_simd=self.obtain_instruction_characterization(instrument_path+self.config_data["application"]["application2"]+"_"+hotspot+"_simd.csv")
             df2.columns=[app2+",number",app2+",ratio"]
-            df2_simd.columns=[app2+",simd_number",app2+",simd_ratio"]
             print(pd.concat([df1, df2], axis=1),file=data)
-            print(pd.concat([df1_simd, df2_simd], axis=1),file=data)
             print("\n",file=data)
     def output_file(self,data):
         print("Runtime",file=data)

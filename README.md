@@ -104,8 +104,8 @@ $ ./run-framework.sh
 
 ## 输出结果
 - **disassemble-data** :输出可执行文件的反汇编文件。
-- **instrument-data** :按函数名称插桩获取到特定函数的指令特征,该文件夹下文件名称为application_function.csv/application_function_simd.csv
-- **instrument-data-logical-address** :按逻辑地址插桩获取特定区间的指令特征,该文件夹下文件名称为application_range.csv/application_range_simd.csv
+- **instrument-data** :按函数名称插桩获取到特定函数的指令特征,该文件夹下文件名称为application_function.csv
+- **instrument-data-logical-address** :按逻辑地址插桩获取特定区间的指令特征,该文件夹下文件名称为application_range.csv
 - **application1_identified_hotspots.json** :输出可执行文件1的“关键”热点函数。
 - **application2_identified_hotspots.json** :输出可执行文件2的“关键”热点函数。
 - **report.out** :输出总结性报告。

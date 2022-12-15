@@ -3,12 +3,15 @@ import os
 import numpy as np
 import pandas as pd
 class Obtain_Hotspot():
+    '''parse the data getting from linux perf'''
+    
     def __init__(self,record_path,runtime_path):
         self.record_path=record_path
         self.runtime_path=runtime_path
         self.identified_hotspots=pd.DataFrame(data={"symbol": [],"overhead(%)": [],"kernel":[]})
         self.top10_hotspots = pd.DataFrame(data={"symbol": [],"overhead(%)": [],"kernel":[]})
-    #从输入文本中获取到正式热点数据的起始行
+        
+    '''get the starting position of hotspot data'''
     def get_hotspot_line_from_text(self,rows):
          index_location = 0
          for i in range(0, len(rows)):
@@ -16,7 +19,8 @@ class Obtain_Hotspot():
                 index_location = i
                 break
          return index_location
-    #从文本中获取热点信息
+
+    '''get the hotspot data from text file'''
     def get_hotspot_list(self,index_location,rows):
         overhead_list = []
         symbol_list = []
@@ -36,12 +40,14 @@ class Obtain_Hotspot():
         self.top10_hotspots["overhead(%)"] = overhead_list
         self.top10_hotspots["symbol"] = symbol_list
         self.top10_hotspots["kernel"] = kernel_list
-    #获取绝对运行时间
+
+    '''get the absolute runtime'''
     def obtain_absolute_runtime(self):
         file=open(self.runtime_path)
         runtime=float(file.read())
         return runtime
-    #返回热点列表
+    
+    '''return the hotspot list'''
     def main(self):
         with open(self.record_path, 'r', encoding="utf-8") as csvfile:
             reader = csv.reader(csvfile)
@@ -52,7 +58,4 @@ class Obtain_Hotspot():
         runtime_list=runtime*np.array(self.top10_hotspots["overhead(%)"])*0.01
         self.top10_hotspots["runtime(sec)"]= runtime_list
         return self.top10_hotspots
-        #self.identified_hotspots = self.top10_hotspots[:identified_hotspot_range]
-        #print(self.top10_hotspots)
-        #print(self.identified_hotspots)
 

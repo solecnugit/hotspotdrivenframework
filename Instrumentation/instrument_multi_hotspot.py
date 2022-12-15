@@ -4,10 +4,14 @@ import sys, getopt
 import argparse
 
 class Instrument():
+    ''' instrument the instructions inside the range of logical address '''
+
     def __init__(self):
         self.config_data={}
         self.output_path=""
         self.dynamorio_output=""
+        
+    ''' gets options in the command line, and create the  output folder.'''
     def get_opt(self):
         parser = argparse.ArgumentParser()
         parser.add_argument('-c', '--config_file',
@@ -17,18 +21,22 @@ class Instrument():
             self.config_data = json.load(myconfig)
         output_file=self.config_data["subfile"]
         self.output_path="./"+self.config_data["paths"]["outpath"] +"/"+output_file
-    #创建输出插桩数据的文件夹
+
+    '''create the subfolder for instrumentation data.'''
     def mkdir_output(self):
         self.dynamorio_output=self.output_path+"/instrument-data"
         if (os.path.exists(self.dynamorio_output))==False:
             os.system("mkdir "+self.dynamorio_output)
-    #加载“确定”的热点列表
+   
+    '''load the list of identified hotspots'''
     def load_hotspot_list(self,app):
         app_output=self.output_path+"/"+app+"_identified_hotspots.json"
         f = open(app_output)
         data = json.load(f)
         f.close()
         return [i for i in data]
+                                
+    '''the startup engine of multi-hotspots instrumentation'''
     def run_app(self,app,run_file):
         drpath=self.config_data["paths"]["dynamoriopath"]
         drlibpath=self.config_data["paths"]["dynamoriolibpath"] + "/build/bin/libfunction_instrument.so"
@@ -38,6 +46,8 @@ class Instrument():
             dynamorio_cmd=drpath +"/bin64/drrun -c " + drlibpath + " -output " +self.dynamorio_output + " -app "+app + " -function "+ hotspot + " -- "+ run_file
             cmd = "screen -dmS " + screen_label + " bash -c " +'"'+ dynamorio_cmd +'"'
             os.system(cmd)
+    
+    '''start up the program'''
     def main(self):
         self.get_opt()
         self.mkdir_output()

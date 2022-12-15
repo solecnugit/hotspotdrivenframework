@@ -44,6 +44,7 @@
 using namespace std;
 static uint64 simd_count = 0;
 uint64 start_address, end_address;
+/*The char array associated with the instruction classification*/
 static droption_t<std::string> app_name(DROPTION_SCOPE_CLIENT, "app",
                                         "ls",
                                         "Name of function to instrument and record",
@@ -56,6 +57,8 @@ static droption_t<std::string> output_path(DROPTION_SCOPE_CLIENT, "output",
                                            "Name of function to instrument and record",
                                            "");
 #define category_number 16
+
+/*The char array associated with the instruction classification*/
 #if defined(X86_64)
 const char *mychars[category_number] = {"INDIRECT_CALL", "INDIRECT_JMP", "INDIRECT_RET", "STACK", "DATAXFER", "BINARY", "LOGICAL", "SHIFT", "CONDITIONAL_BRANCH", "UNCONDITIONAL_DIRECT_BRANCH", "SIMD_INSTR", "REST_INSTR", "INDIRCT_BRANCH", "BRANCH_INSTR", "OPERATION_INSTR", "TOTAL_INSTR"};
 #elif defined(AARCH64)
@@ -63,10 +66,14 @@ const char *mychars[category_number] = {"INDIRECT_CALL", "INDIRECT_JMP", "INDIRE
 #endif
 
 uint64 instr_kind_array[category_number] = {0};
+
+/*callback function*/
 void instr_kind_count(int kind)
 {
     instr_kind_array[kind] += 1;
 }
+
+/*Classify the instruction set*/
 static dr_emit_flags_t
 event_app_instruction(void *drcontext, void *tag, instrlist_t *bb, bool for_trace,
                       bool translating)
@@ -87,6 +94,7 @@ event_app_instruction(void *drcontext, void *tag, instrlist_t *bb, bool for_trac
     return DR_EMIT_DEFAULT;
 }
 
+/*output instrumentation result*/
 static void
 event_exit(void)
 {
@@ -103,6 +111,7 @@ event_exit(void)
     MyFile.close();
 }
 
+/*Startup engine of the client*/
 DR_EXPORT void
 dr_client_main(client_id_t id, int argc, const char *argv[])
 {

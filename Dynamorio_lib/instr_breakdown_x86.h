@@ -1,4 +1,7 @@
 #include "dr_api.h"
+
+/*Classify the instruction set for the X64 platform*/
+
 static bool my_instr_is_mov(instr_t *instr);
 static bool my_instr_has_mem_ref(instr_t *instr);
 static bool my_instr_is_binary(instr_t *instr);

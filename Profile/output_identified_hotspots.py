@@ -7,11 +7,14 @@ import argparse
 import warnings
 
 class Output_Identified_Hotspots():
+    '''get identified hotspots list and output it to a json file'''
+    
     def __init__(self):
         self.config_data={}
         self.output_perf_file=""
         self.output_path=""
-    #获取命令行传入的参数
+
+    ''' gets options in the command line, and create the  output folder.'''
     def get_opt(self):
         parser = argparse.ArgumentParser()
         parser.add_argument('-c', '--config_file',
@@ -24,19 +27,26 @@ class Output_Identified_Hotspots():
         self.output_perf_file=self.output_path+"/profile-data/"
         if (os.path.exists(self.output_perf_file))==False:
             os.system("mkdir "+self.output_perf_file)
-    #将dataframe转换成json
+            
+    '''Convert dataframe format to json format'''
     def to_jsonfile(self,df, orient='index'):
         df_json = df.to_json(orient=orient, force_ascii=False)
         return json.loads(df_json)
-    #输出json文件
+
+    '''output json file'''
     def output_json(self, myjson, path):
         with open(path, "w") as write_file:
             json.dump(myjson, write_file, indent=4)
-    #为df添加新的一行
+
+    '''append a new column into dataframe '''
     def append_row(self,frame,sym,overhead,runtime,kernel):
         frame.loc[len(frame.index)] = [sym,overhead,kernel,runtime] 
         return frame
-    #根据热点选择算法，从热点列表里面进行初步选取“确定”热点
+
+    '''
+    According to the first two hotspot selection algorithm in the paper, 
+    preliminarily select identified hotspots from the hotspot list.
+    '''    
     def get_identified_hotspot(self,overhead_list):
         identified_hotspot_range = 0
         threshold= int(self.config_data["hotspot_selection_threshold"][:-1])
@@ -52,7 +62,11 @@ class Output_Identified_Hotspots():
                     identified_hotspot_range = i+1
                     break
         return identified_hotspot_range
-    #获取补充的热点数据（根据对比另一个参考对象的热点列表）
+
+    '''
+    According to the third hotspot selection algorithm, 
+    select other identified hotspots from the hotspot list.
+    '''  
     def obtain_whole_hotspot(self,modified_identified_hotspots,modified_top10_hotspots,refer_identified_hotspots):
         modified_top10_hotspots = modified_top10_hotspots.set_index("symbol", drop=False)
         for symbol in list(refer_identified_hotspots["symbol"]):
@@ -64,11 +78,14 @@ class Output_Identified_Hotspots():
                 kernel = modified_top10_hotspots.loc[symbol]["kernel"]
                 modified_identified_hotspots =self.append_row(modified_identified_hotspots,sym,overhead,runtime,kernel)
         return modified_identified_hotspots
-    #初步获取热点数据
+    
+    '''get the top10 hotspot data'''
     def get_hotspot_object(self,app_name):
         record_path=self.output_perf_file+app_name+".perf.report.csv"
         runtime=self.output_perf_file+app_name+".runtime.out"
         return Obtain_Hotspot(record_path,runtime)
+    
+    '''start up this program'''
     def main(self):
         warnings.filterwarnings("ignore")
         self.get_opt()

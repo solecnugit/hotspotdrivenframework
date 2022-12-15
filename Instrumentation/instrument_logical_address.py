@@ -3,10 +3,14 @@ import os
 import sys, getopt
 import argparse
 class Logical():
+    ''' instrument the instructions inside the range of logical address '''
+    
     def __init__(self):
         self.config_data={}
         self.output_path=""
         self.dynamorio_output=""
+        
+    ''' gets options in the command line, and create the  output folder.'''
     def get_opt(self):
         parser = argparse.ArgumentParser()
         parser.add_argument('-c', '--config_file',
@@ -19,6 +23,8 @@ class Logical():
         self.dynamorio_output=self.output_path+"/instrument-data-logical-address/"
         if (os.path.exists(self.dynamorio_output))==False:
             os.system("mkdir "+self.dynamorio_output)
+    
+    '''startup dynamorio client'''
     def run_app(self,runfile,app):
         app_name=self.config_data["application"][app]
         drpath=self.config_data["paths"]["dynamoriopath"]
@@ -28,6 +34,8 @@ class Logical():
         dynamorio_cmd=drpath +"/bin64/drrun -c " + drlibpath + " -output " +self.dynamorio_output + " -app "+app_name + " -logical_address "+ logical_range + " -- "+ runfile
         cmd = "screen -dmS " + screen_label + " bash -c " +'"'+ dynamorio_cmd +'"'
         os.system(cmd)
+    
+    '''parse the json, and start up the program'''
     def main(self):
         self.get_opt()
         if self.config_data["logical_address"]["application1"]["instrumentation"]=="true":

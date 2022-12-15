@@ -14,6 +14,8 @@ bool tag_is_main_module(void *tag);
 bool logical_address_is_in_range(app_pc physical_address, u_long start_address,u_long end_address);
 const char *get_main_module_name();
 bool physical_address_is_in_range(app_pc physical_address, u_long start_address,u_long end_address);
+
+/*Looks up the function name for the corresponding instruction*/
 char *
 get_symbol_name(app_pc instr_address)
 {
@@ -34,7 +36,7 @@ get_symbol_name(app_pc instr_address)
     return sym.name;
 }
 
-
+/*Looks up module name for the main executable*/
 const char *
 get_main_module_name()
 {
@@ -43,6 +45,7 @@ get_main_module_name()
     return modname;
 }
 
+/*Looks up module name for the corresponding instruction*/
 const char *
 get_module_name(app_pc instr_address)
 {
@@ -55,6 +58,7 @@ get_module_name(app_pc instr_address)
     return modname;
 }
 
+/*Looks up absolute path for the module of corresponding instruction*/
 const char *
 get_module_path(app_pc instr_address)
 {
@@ -65,6 +69,7 @@ get_module_path(app_pc instr_address)
     return data->full_path;
 }
 
+/*Determines whether the physical address belongs to given function*/
 bool
 symbol_name_is_equal(app_pc instr_address,const char *given_symname)
 {
@@ -90,6 +95,7 @@ symbol_name_is_equal(app_pc instr_address,const char *given_symname)
     }
 }
 
+/*Looks up the logical address of given physical address*/
 size_t
 get_logical_address(app_pc physical_address)
 {
@@ -101,6 +107,7 @@ get_logical_address(app_pc physical_address)
     return logical_address;
 }
 
+/*Looks up the first physical address for given function*/
 app_pc
 get_physical_address_symbol_head(app_pc physical_address,const char *symbol_name)
 {
@@ -119,6 +126,7 @@ get_physical_address_symbol_head(app_pc physical_address,const char *symbol_name
     return physical_address_symbol_head;
 }
 
+/*Determines whether the physical address is the first instruction of given function*/
 bool
 physical_address_is_symbol_head(app_pc physical_address,const char *symbol_name)
 {
@@ -134,6 +142,7 @@ physical_address_is_symbol_head(app_pc physical_address,const char *symbol_name)
     return (uint64)physical_address_symbol_head==(uint64)physical_address;    
 }
 
+/*Looks up the first instruction of the main executable*/
 uint64
 get_main_module_symbol_head(const char *symbol_name)
 {
@@ -148,11 +157,13 @@ get_main_module_symbol_head(const char *symbol_name)
     return (uint64)physical_address_symbol_head;
 }
 
+/*Determines whether the tag belongs to the module of main executable*/
 bool tag_is_main_module(void *tag){
     module_data_t *main_module = dr_get_main_module();
     return dr_module_contains_addr(main_module, dr_fragment_app_pc(tag));
 }
 
+/*Determines whether the logical address is within a certain range*/
 bool
 logical_address_is_in_range(app_pc physical_address, u_long start_address,
                             u_long end_address)
@@ -169,6 +180,8 @@ logical_address_is_in_range(app_pc physical_address, u_long start_address,
         return false;
     }
 }
+
+/*Determines whether the physical address is within a certain range*/
 bool
 physical_address_is_in_range(app_pc physical_address, u_long start_address, //static linking
                             u_long end_address)

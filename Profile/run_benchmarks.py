@@ -4,10 +4,12 @@ import json
 import argparse
 import time
 class Run_Perf():
+    '''run the executable and obtain profiling data through linux perf.'''
     def __init__(self):
         self.config_data={}
         self.output_perf_file=""
-    #获取命令行选项并且创建输出文件夹
+
+    ''' gets options in the command line, and create the  output folder.'''
     def get_opt(self):
         parser = argparse.ArgumentParser()
         parser.add_argument('-c', '--config_file',
@@ -23,7 +25,8 @@ class Run_Perf():
             os.system("mkdir "+self.output_perf_file)
         if (os.path.exists(self.output_disassemble_file))==False:
             os.system("mkdir "+self.output_disassemble_file)
-    #运行具体perf命令
+
+    '''run the linux perf to get profiling data'''
     def perf_command(self,app_name,app_cmd):
         start=time.perf_counter()
         os.system(app_cmd)
@@ -35,10 +38,13 @@ class Run_Perf():
         os.system(run_record)
         record_cmd= "perf report -F overhead,symbol --field-separator=,>"+self.output_perf_file+app_name+".perf.report.csv"
         os.system(record_cmd)
-    #运行objdump命令
+        
+    ''' run the objdump to get the assembly file'''
     def objdump_command(self,app_name,app_cmd):
         objdump_cmd= "objdump -S "+app_cmd+">"+self.output_disassemble_file+app_name+".s"
         os.system(objdump_cmd)
+    
+    '''run executable with profiling tools'''
     def run(self):
         run_file1="./"+self.config_data["paths"]["benchpath"]+"/"+self.config_data["application"]["application1"]+" "+self.config_data["application"]["run_command1"]
         run_file2="./"+self.config_data["paths"]["benchpath"]+"/"+self.config_data["application"]["application2"]+" "+self.config_data["application"]["run_command2"]
@@ -47,7 +53,8 @@ class Run_Perf():
         os.system("rm perf.data*")
         self.objdump_command(self.config_data["application"]["application1"],run_file1)
         self.objdump_command(self.config_data["application"]["application2"],run_file2)
-        
+
+    '''start up the program'''
     def main(self):
         self.get_opt()
         self.run()

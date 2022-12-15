@@ -4,9 +4,13 @@ import sys, getopt
 import pandas as pd
 import argparse
 class Output_Identified_Hotspots():
+    '''Output a comprehensive report'''
+    
     def __init__(self):
         self.config_data={}
         self.output_path=""
+    
+    ''' gets options in the command line, and create the  output folder.'''
     def get_opt(self):
         parser = argparse.ArgumentParser()
         parser.add_argument('-c', '--config_file',
@@ -16,37 +20,52 @@ class Output_Identified_Hotspots():
             self.config_data = json.load(myconfig)
         output_file=self.config_data["subfile"]
         self.output_path="./"+self.config_data["paths"]["outpath"] +"/"+output_file
+
+    '''get the absolute runtime of given executable'''
     def obtain_absolute_runtime(self,runtime_path):
         file=open(runtime_path)
         return file.read()
+
+    '''return the text of detail runtime and executable name'''
     def return_runtime(self,app_name):
         return app_name+": "+self.obtain_absolute_runtime(self.output_path+"/profile-data/"+app_name+".runtime.out")
+    
+    '''
+    look up the public hotspot of hotspots1 list and hotspots2 list,
+    '''
     def search_public_hotspots(self,hotspots1,hotspots2):
         public_list=[]
         for i in hotspots1:
             if i in hotspots2:
                 public_list.append(i)
         return public_list
+    
+    '''get the identified hotspots of given executable from json file'''
     def obtain_identified_hotspots(self,app_name):
         with open(self.return_json_name(app_name), 'r') as json_file:
             jsons = json.load(json_file)
         df = pd.DataFrame.from_dict(jsons, orient="index")
         df.columns=[app_name+",overhead(%)",app_name+",kernel",app_name+",runtime(sec)"]
         return df
+    
+    '''get the json name of identified hotspots list of given executable'''
     def return_json_name(self,app_name):
         return self.output_path+"/"+app_name+"_identified_hotspots.json"
+    
+    '''get instrumentation files'''
     def obtain_instruction_characterization(self,instrument_csv_file):
-        if "_simd.csv" not in instrument_csv_file:
-            df=pd.read_csv(instrument_csv_file,index_col="Category")
-        else:
-            df=pd.read_csv(instrument_csv_file,index_col=False)
+        df=pd.read_csv(instrument_csv_file,index_col="Category")
         return df
+    
+    '''load the list of identified hotspots'''
     def load_hotspot_list(self,app_name):
         app_output=self.output_path+"/"+app_name+"_identified_hotspots.json"
         f = open(app_output)
         data = json.load(f)
         f.close()
         return [i for i in data]
+    
+    '''output the hotspots list and return the public hotspots'''
     def generate_hotspots_lists(self,data):
         df1=self.obtain_identified_hotspots(self.config_data["application"]["application1"])
         df2=self.obtain_identified_hotspots(self.config_data["application"]["application2"])
@@ -54,6 +73,8 @@ class Output_Identified_Hotspots():
         result = pd.concat([df1, df2], axis=1)
         print(result,file=data)
         return public
+    
+    ''' output instrumentation results of some hotspots that are only in a single executable'''
     def generate_instructions_characterization_single_app(self,public_list,data):
         instrument_path=self.output_path+"/instrument-data/"
         for app in ["application1","application2"]:
@@ -65,9 +86,10 @@ class Output_Identified_Hotspots():
                 for hotspot in hotspot_list:
                     print(app_name+" "+hotspot,file=data)
                     file_path=instrument_path+app_name+"_"+hotspot+".csv"
-                    file_simd_path=instrument_path+app_name+"_"+hotspot+"_simd.csv"
                     print(self.obtain_instruction_characterization(file_path),file=data)
                     print("\n",file=data)
+                    
+    ''' output instrumentation results of some hotspots that are in both executables'''
     def generate_instructions_characterization_both_apps(self,public_list,data):
         instrument_path=self.output_path+"/instrument-data/"
         app1=self.config_data["application"]["application1"]
@@ -82,6 +104,8 @@ class Output_Identified_Hotspots():
             df2.columns=[app2+",number",app2+",ratio"]
             print(pd.concat([df1, df2], axis=1),file=data)
             print("\n",file=data)
+            
+    '''output results to a given file'''
     def output_file(self,data):
         print("Runtime",file=data)
         print("="*100,file=data)
@@ -95,6 +119,8 @@ class Output_Identified_Hotspots():
         self.generate_instructions_characterization_both_apps(public_list,data)
         print("-"*100,file=data)
         self.generate_instructions_characterization_single_app(public_list,data)
+        
+    '''the startup engine of this program'''
     def main(self):
         pd.set_option('display.width', None)
         self.get_opt()

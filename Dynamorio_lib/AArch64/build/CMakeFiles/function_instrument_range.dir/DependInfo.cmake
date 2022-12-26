@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/wlmu/hotspotdrivenframework/Dynamorio_lib/function_instrument_range.cpp" "CMakeFiles/function_instrument_range.dir/function_instrument_range.cpp.o" "gcc" "CMakeFiles/function_instrument_range.dir/function_instrument_range.cpp.o.d"
+  "/home/wlmu/DynamoRIO/AArch64/function_instrument_range.cpp" "CMakeFiles/function_instrument_range.dir/function_instrument_range.cpp.o" "gcc" "CMakeFiles/function_instrument_range.dir/function_instrument_range.cpp.o.d"
   )
 
 # Targets to which this target links.

@@ -1,7 +1,7 @@
 {
     "paths": {
       "benchpath":"Samples",
-      "dynamoriolibpath": "Dynamorio_lib",
+      "dynamoriolibpath": "Dynamorio_lib/X64",
       "outpath": "Outputs",
       "dynamoriopath":"/home/wlmu/DynamoRIO"
     },

@@ -17,10 +17,13 @@ class Run():
             self.config_data = json.load(myconfig)
         root_directory = os.path.dirname(os.path.abspath(__file__))
         output_file=self.config_data["subfile"]
+        self.out_folder=root_directory+"/"+self.config_data["paths"]["outpath"]
         self.output_path=root_directory+"/"+self.config_data["paths"]["outpath"] +"/"+output_file
 
     '''create the output folder'''
     def mkdir_outputs(self):
+        if (os.path.exists(self.out_folder))==False:
+            os.system("mkdir "+self.out_folder)        
         if (os.path.exists(self.output_path))==False:
             os.system("mkdir "+self.output_path)
             print("Output path:"+self.output_path)
@@ -127,4 +130,4 @@ class Run():
             self.report(print_command)
 if __name__=="__main__":
     demo=Run()
-    demo.main(print_command=True)
+    demo.main(print_command=False)

@@ -1,15 +1,16 @@
-UBUNTU_VERSION?=18.04
+UBUNTU_VERSION?=20.04
 TOOL?=hotspotdrivenframework
 DOCKER_IMAGE?=ubuntu:$(UBUNTU_VERSION)-$(TOOL)
 DOCKER_FILE?=Dockerfile-ubuntu-$(UBUNTU_VERSION)
+DynamoRIO_PATH?=$(shell pwd)/DynamoRIO
 ZIPS=.tar.gz
 ARCH=$(shell uname -m)
 ifeq ($(ARCH), aarch64)
 	DYNAMORIO_GIT_RELEASE?="https://github.com/DynamoRIO/dynamorio/releases/download/release_9.0.1/DynamoRIO-AArch64-Linux-9.0.1.tar.gz"
-	DYNAMORIO_DIR?=DynamoRIO-AArch64-Linux-9.0.1
+	DYNAMORIO_NAME?=DynamoRIO-AArch64-Linux-9.0.1
 else ifeq ($(ARCH), x86_64)
 	DYNAMORIO_GIT_RELEASE?="https://github.com/DynamoRIO/dynamorio/releases/download/release_9.0.1/DynamoRIO-Linux-9.0.1.tar.gz"
-	DYNAMORIO_DIR?="DynamoRIO-Linux-9.0.1"
+	DYNAMORIO_NAME?="DynamoRIO-Linux-9.0.1"
 else
         $(error Unsupported architecture!)
 endif
@@ -21,19 +22,17 @@ tools:
 	@if [ ! -d "DynamoRIO" ]; then \
 		$(info Downloading DynamoRIO) \
 		wget  $(DYNAMORIO_GIT_RELEASE); \
-		tar -zxf  $(DYNAMORIO_DIR)$(ZIPS); \
-		mv  $(DYNAMORIO_DIR) DynamoRIO ; \
-		echo $(DYNAMORIO_DIR)$(ZIPS); \
+		tar -zxf  $(DYNAMORIO_NAME)$(ZIPS); \
+		mv  $(DYNAMORIO_NAME) DynamoRIO ; \
+		echo $(DYNAMORIO_NAME)$(ZIPS); \
 	fi
-
 
 
 build: $(DOCKER_FILE).build
 
 # Use a .PHONY target to build all of the docker images if requested
 Dockerfile%.build: Dockerfile%
-	docker build  $(DOCKER_BUILD_OPT) -f $(<) -t ubuntu:$(subst Dockerfile-ubuntu-,,$(<))-$(TOOL) .
-
+	docker build   $(DOCKER_BUILD_OPT) -f $(<) -t ubuntu:$(subst Dockerfile-ubuntu-,,$(<))-$(TOOL) .
 
 clean:
 	rm -rf $(DYNAMORIO_DIR)$(ZIPS)

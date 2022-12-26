@@ -47,8 +47,7 @@ cd ./Samples && make
 ### 编译DynamoRIO Client
 
 ```js
-cd Dynamorio_lib && mkdir build && cd build
-export DYNAMORIO_DIR=path/to/dynamorio_build
+cd Dynamorio_lib && mkdir build && cd build && export DYNAMORIO_DIR=path/to/dynamorio_build
 cmake .. 
 make
 ```

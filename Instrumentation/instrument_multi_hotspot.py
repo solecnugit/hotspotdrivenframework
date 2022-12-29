@@ -43,7 +43,7 @@ class Instrument():
         hotspot_lists=self.load_hotspot_list(app)
         for hotspot in hotspot_lists:
             screen_label=app+"_"+hotspot
-            dynamorio_cmd=drpath +"/bin64/drrun -c " + drlibpath + " -output " +self.dynamorio_output + " -app "+app + " -function "+ hotspot + " -- "+ run_file
+            dynamorio_cmd=drpath +"/bin64/drrun -max_bb_instrs 8 -c  " + drlibpath + " -output " +self.dynamorio_output + " -app "+app + " -function "+ hotspot + " -- "+ run_file
             cmd = "screen -dmS " + screen_label + " bash -c " +'"'+ dynamorio_cmd +'"'
             os.system(cmd)
     

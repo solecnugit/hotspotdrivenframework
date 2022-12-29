@@ -110,7 +110,7 @@ $ ./run-framework.sh config.json
 - **application2_identified_hotspots.json** :输出可执行文件2的“关键”热点函数。
 - **report.out** :输出总结性报告。
 ## 论文结果验证
-利用基本使用方法(1)中的方法构造镜像，并且安装DynamoRIO。之后跳过编译的过程。
+利用基本使用方法(1)中的方法构造镜像，并且安装DynamoRIO。然后可以根据基本方法（3）中的描述适当更改配置文件config_omnetpp.json和config_exchange.json。
 
 在X64平台运行如下命令，大约30分钟内运行完成
 ```js

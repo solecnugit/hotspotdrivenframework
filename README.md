@@ -103,7 +103,7 @@ $ ./run-framework.sh config.json
 
 在命令行输入`./run-framework.sh xxx.json`就可以运行自动化框架，当脚本运行完成后有关结果就会输出到对应目录。更改命令行中的json文件名称，可以更改全局的配置文件。
 
-如果要复现论文中的结果，则分别采用配置好的json文件config_exchange.json和config_omnetpp.json文件。
+如果测试框架的基本功能，就采用config.json文件。要复现论文中的结果，则分别采用配置好的json文件config_exchange.json和config_omnetpp.json文件。
 
 ---
 

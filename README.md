@@ -18,7 +18,7 @@
 
 ## 基本使用方法
 
-### 利用docker镜像启动应用程序
+### (1)利用docker镜像启动应用程序
 
 查看内核版本
 ```js
@@ -48,19 +48,16 @@ make run
 make tools
 ```
 
-### 尝试工具基本用法
+### (2)尝试工具基本用法
 
 ```js
 cd ./Samples && make
 ```
 
----
-
-### 编译DynamoRIO Client
 
 ---
 
-### 配置json文件
+### (3)配置json文件
 
 我们的框架通过json文件来设置程序运行过程中所需的全部参数，参数作用具体描述如下：
 
@@ -103,8 +100,6 @@ $ ./run-framework.sh config.json
 
 在命令行输入`./run-framework.sh xxx.json`就可以运行自动化框架，当脚本运行完成后有关结果就会输出到对应目录。更改命令行中的json文件名称，可以更改全局的配置文件。
 
-如果测试框架的基本功能，就采用config.json文件。要复现论文中的结果，则分别采用配置好的json文件config_exchange.json和config_omnetpp.json文件。
-
 ---
 
 ## 输出结果
@@ -114,3 +109,15 @@ $ ./run-framework.sh config.json
 - **application1_identified_hotspots.json** :输出可执行文件1的“关键”热点函数。
 - **application2_identified_hotspots.json** :输出可执行文件2的“关键”热点函数。
 - **report.out** :输出总结性报告。
+## 论文结果验证
+利用基本使用方法(1)中的方法构造镜像，并且安装DynamoRIO。之后跳过编译的过程。
+
+在X64平台运行如下命令，大约30分钟内运行完成
+```js
+$ ./run-framework.sh config_omnetpp.json
+```
+
+在AArch64平台运行如下命令，大约2小时内运行完成
+```js
+$ ./run-framework.sh config_exchange.json
+```

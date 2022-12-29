@@ -1,6 +1,7 @@
 FROM ubuntu:20.04
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+ENV LD_LIBRARY_PATH  ./SPECWorkload/ExtraLib/JemallocLib:./SPECWorkload/ExtraLib/BishengLib:./SPECWorkload/ExtraLib/ICCLib:$LD_LIBRARY_PATH
 RUN apt-get update && apt-get install sudo
 RUN apt-get update && apt-get install -y \
     gfortran \
@@ -15,10 +16,7 @@ RUN apt-get update && apt-get install -y \
 	python3-pip \
 	linux-tools-common \
 	linux-tools-generic \
-	linux-cloud-tools-generic \
-    linux-tools-5.4.0-131-generic\
-    linux-cloud-tools-5.4.0-131-generic\
+    linux-tools-5.15.0-41-generic\
  && rm -rf /var/lib/apt/lists/*
-
 RUN pip3 install --no-cache-dir  --upgrade pip && \
     pip3 install --no-cache-dir pandas

@@ -1,0 +1,33 @@
+{
+  "paths": {
+    "benchpath":"SPECWorkload/X64",
+    "dynamoriolibpath": "Dynamorio_lib/X64",
+    "outpath": "Outputs",
+    "dynamoriopath":"./DynamoRIO"
+  },
+  "application":{
+    "application1":"omnetpp_s_icc",
+    "application2":"omnetpp_s_gcc",
+    "run_command1":"  -c General -r 0 > ./SPECWorkload/X64/omnetpp.General-icc.out 2>> ./SPECWorkload/X64/omnetpp.General-icc.err",
+    "run_command2":"  -c General -r 0 > ./SPECWorkload/X64/omnetpp.General-gcc.out 2>> ./SPECWorkload/X64/omnetpp.General-gcc.err"
+  },
+  "subfile":"omnetpp_s_train2",
+  "sleep_second":1,
+  "hotspot_selection_threshold":"90%",
+  "runmode":{
+    "function_name":"true",
+    "logical_address":"false"
+  },
+  "logical_address":{
+    "application1":{
+      "instrumentation":"true",
+      "start":"c08",
+      "end":"cbc"
+    },
+    "application2":{
+      "instrumentation":"true",
+      "start":"b80",
+      "end":"d7c"
+    }
+}
+}

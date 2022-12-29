@@ -1,9 +1,9 @@
 {
     "paths": {
       "benchpath":"Samples",
-      "dynamoriolibpath": "Dynamorio_lib/X64",
+      "dynamoriolibpath": "Dynamorio_lib/AArch64",
       "outpath": "Outputs",
-      "dynamoriopath":"/home/wlmu/DynamoRIO"
+      "dynamoriopath":"./DynamoRIO"
     },
     "application":{
       "application1":"BubbleSort1",

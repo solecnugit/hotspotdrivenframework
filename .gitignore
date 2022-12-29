@@ -2,6 +2,7 @@
 *.d
 *.so
 *.pyc
+*.err
 Dynamorio_lib/build
 Outputs
 __pycache__

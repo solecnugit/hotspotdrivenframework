@@ -1,0 +1,33 @@
+{
+  "paths": {
+    "benchpath":"SPECWorkload/AArch64",
+    "dynamoriolibpath": "Dynamorio_lib/AArch64",
+    "outpath": "Outputs",
+    "dynamoriopath":"DynamoRIO"
+  },
+  "application":{
+    "application1":"exchange2_s_bisheng",
+    "application2":"exchange2_s_gcc",
+    "run_command1":" 1 > ./SPECWorkload/AArch64/exchange2_bisheng.txt 2>> ./SPECWorkload/AArch64/exchange2_bisheng.err",
+    "run_command2":" 1 > ./SPECWorkload/AArch64/exchange2_gcc.txt 2>> ./SPECWorkload/AArch64/exchange2_gcc.err"
+  },
+  "subfile":"exchange2_s_train1",
+  "sleep_second":1,
+  "hotspot_selection_threshold":"90%",
+  "runmode":{
+    "function_name":"true",
+    "logical_address":"false"
+  },
+  "logical_address":{
+    "application1":{
+      "instrumentation":"true",
+      "start":"c08",
+      "end":"cbc"
+    },
+    "application2":{
+      "instrumentation":"true",
+      "start":"b80",
+      "end":"d7c"
+    }
+}
+}

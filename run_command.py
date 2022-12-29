@@ -85,7 +85,10 @@ class Run():
         return_code, output = subprocess.getstatusoutput('screen -ls')
         text_list=[text for text in output.split("\n")  if "." in text and "\t" in text]
         for text in text_list:
-            number,name=text.split("\t")[1].split(".",2)
+            a=text.split("\t")[1]
+            label=a.split(".")
+            number=label[0]
+            name=".".join(label[1:])
             if name in screen_label_list:
                 proc_dict[number]=name
         return proc_dict

@@ -16,9 +16,20 @@
   ```
 ---
 
-## 使用方法
+## 基本使用方法
 
-### 利用docker镜像启动应用程序(可跳过)
+### 利用docker镜像启动应用程序
+
+查看内核版本
+```js
+uname -a
+>Linux taishan-200 5.15.0-41-generic #44-Ubuntu SMP Thu Jun 23 11:20:13 UTC 2022 aarch64 aarch64 aarch64 GNU/Linux
+```
+
+将Dockerfile-ubuntu-20.04中的第19行替换为指定的内核版本，例如：
+```js
+linux-tools-*\ ->  linux-tools-5.15.0-41-generic\
+```
 
 构建docker镜像
 
@@ -30,13 +41,14 @@ make build
 ```js
 make run
 ```
+
 下载并解压DynamoRIO
 
 ```js
 make tools
 ```
 
-### 编译被分析的可执行文件
+### 尝试工具基本用法
 
 ```js
 cd ./Samples && make
@@ -46,24 +58,18 @@ cd ./Samples && make
 
 ### 编译DynamoRIO Client
 
-```js
-cd Dynamorio_lib && mkdir build && cd build && export DYNAMORIO_DIR=path/to/dynamorio_build
-cmake .. 
-make
-```
-
 ---
 
 ### 配置json文件
 
-我们的框架通过json文件来设置程序运行过程中所需的全部参数，默认json均为config.json。参数作用具体描述如下：
+我们的框架通过json文件来设置程序运行过程中所需的全部参数，参数作用具体描述如下：
 
 - **paths** :半自动框架用到的路径集合
   
   - benchpath：被分析的可执行文件所在路径
-  - dynamoriolibpath：自定义的DynamoRIO lib(client)所在路径
+  - dynamoriolibpath：自定义的DynamoRIO lib(client)所在路径,在X64平台上为Dynamorio_lib/X64，AArch64平台上为Dynamorio_lib/AArch64
   - outpath：输出结果的路径（一级目录）
-  - dynamoriopath：DynamoRIO所在路径
+  - dynamoriopath：DynamoRIO所在路径，执行完make tools之后，框架自动配置的路径为DynamoRIO
 - **Application**
   
   - application1：可执行文件1的名称
@@ -92,12 +98,12 @@ make
 ### 运行
 
 ```js
-$ ./run-framework.sh
+$ ./run-framework.sh config.json
 ```
 
-在命令行输入`./run-framework.sh`就可以运行自动化框架，当脚本运行完成后有关结果就会输出到对应目录。这两个脚本中默认的json为config.json，更改脚本中的config_json变量，可以更改全局的配置文件。
+在命令行输入`./run-framework.sh xxx.json`就可以运行自动化框架，当脚本运行完成后有关结果就会输出到对应目录。更改命令行中的json文件名称，可以更改全局的配置文件。
 
-如果要复现论文中的结果，需要将构建好的SPEC CPU2017基准测试的可执行文件放到特定目录中(参考[ Avoiding runcpu](https://www.spec.org/cpu2017/Docs/runcpu-avoidance.html))，然后配置相关json文件，其余步骤同上。
+如果要复现论文中的结果，则分别采用配置好的json文件config_exchange.json和config_omnetpp.json文件。
 
 ---
 

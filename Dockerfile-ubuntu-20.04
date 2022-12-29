@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
 	python3-pip \
 	linux-tools-common \
 	linux-tools-generic \
-    linux-tools-5.15.0-41-generic\
+    linux-tools-*\
  && rm -rf /var/lib/apt/lists/*
 RUN pip3 install --no-cache-dir  --upgrade pip && \
     pip3 install --no-cache-dir pandas

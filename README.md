@@ -9,7 +9,7 @@ In order to identify the key optimizations adopted by some high-performance comp
 - [screen](https://linux.die.net/man/1/screen)
 - [Cmake](https://cmake.org/files/)
 - python3 (pandas/numpy)
-- DynamoRIO client can't support the linux system with [glibc2.34+](https://github.com/DynamoRIO/dynamorio/issues/5437), so we have to choose a linux system configured with glibc2.34 or below.
+- [DynamoRIO client can't support the linux system with glibc2.34+](https://github.com/DynamoRIO/dynamorio/issues/5437), so we have to choose a linux system configured with glibc2.34 or below.
 - The following commands are required before running Linux perf:
   ```js
   sudo sysctl -w kernel.perf_event_paranoid=-1

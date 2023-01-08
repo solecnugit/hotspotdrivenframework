@@ -67,15 +67,15 @@ class Output_Identified_Hotspots():
     According to the third hotspot selection algorithm, 
     select other identified hotspots from the hotspot list.
     '''  
-    def obtain_whole_hotspot(self,modified_identified_hotspots,modified_top10_hotspots,refer_identified_hotspots):
-        modified_top10_hotspots = modified_top10_hotspots.set_index("symbol", drop=False)
+    def obtain_whole_hotspot(self,modified_identified_hotspots,all_hotspots,refer_identified_hotspots):
+        all_hotspots = all_hotspots.set_index("symbol", drop=False)
         for symbol in list(refer_identified_hotspots["symbol"]):
-            if symbol in list(modified_top10_hotspots["symbol"]) and symbol not in list(
+            if symbol in list(all_hotspots["symbol"]) and symbol not in list(
                     modified_identified_hotspots["symbol"]):
-                sym = modified_top10_hotspots.loc[symbol]["symbol"]
-                overhead = modified_top10_hotspots.loc[symbol]["overhead(%)"]
-                runtime = modified_top10_hotspots.loc[symbol]["runtime(sec)"]
-                kernel = modified_top10_hotspots.loc[symbol]["kernel"]
+                sym = all_hotspots.loc[symbol]["symbol"]
+                overhead = all_hotspots.loc[symbol]["overhead(%)"]
+                runtime = all_hotspots.loc[symbol]["runtime(sec)"]
+                kernel = all_hotspots.loc[symbol]["kernel"]
                 modified_identified_hotspots =self.append_row(modified_identified_hotspots,sym,overhead,runtime,kernel)
         return modified_identified_hotspots
     
@@ -89,12 +89,16 @@ class Output_Identified_Hotspots():
     def main(self):
         warnings.filterwarnings("ignore")
         self.get_opt()
-        app1_top10=self.get_hotspot_object(self.config_data["application"]["application1"]).main()
-        app2_top10=self.get_hotspot_object(self.config_data["application"]["application2"]).main()
+        app1_hotspots=self.get_hotspot_object(self.config_data["application"]["application1"])
+        app2_hotspots=self.get_hotspot_object(self.config_data["application"]["application2"])
+        app1_top10=app1_hotspots.get_top10_hotspots()
+        app2_top10=app2_hotspots.get_top10_hotspots()
         init_app1_identified =app1_top10[:self.get_identified_hotspot(list(app1_top10["overhead(%)"]))]
         init_app2_identified =app2_top10[:self.get_identified_hotspot(list(app2_top10["overhead(%)"]))]
-        identified_hotspots_binary_1=self.obtain_whole_hotspot(init_app1_identified,app1_top10,init_app2_identified)
-        identified_hotspots_binary_2=self.obtain_whole_hotspot(init_app2_identified,app2_top10,init_app1_identified)
+        app1_all=app1_hotspots.get_all_hotspots()
+        app2_all=app2_hotspots.get_all_hotspots()
+        identified_hotspots_binary_1=self.obtain_whole_hotspot(init_app1_identified,app1_all,init_app2_identified)
+        identified_hotspots_binary_2=self.obtain_whole_hotspot(init_app2_identified,app2_all,init_app1_identified)
         identified_hotspots_binary_1 = identified_hotspots_binary_1.set_index("symbol", drop=True)
         identified_hotspots_binary_2 = identified_hotspots_binary_2.set_index("symbol", drop=True)
         suffix="_identified_hotspots.json"

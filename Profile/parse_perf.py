@@ -10,6 +10,7 @@ class Obtain_Hotspot():
         self.runtime_path=runtime_path
         self.identified_hotspots=pd.DataFrame(data={"symbol": [],"overhead(%)": [],"kernel":[]})
         self.top10_hotspots = pd.DataFrame(data={"symbol": [],"overhead(%)": [],"kernel":[]})
+        self.all_hotspots = pd.DataFrame(data={"symbol": [],"overhead(%)": [],"kernel":[]})
         
     '''get the starting position of hotspot data'''
     def get_hotspot_line_from_text(self,rows):
@@ -19,13 +20,22 @@ class Obtain_Hotspot():
                 index_location = i
                 break
          return index_location
-
+     
+    '''get the starting position of hotspot data'''
+    def get_hotspot_end_from_text(self,index_start,rows):
+        index_location = 0
+        for i in range(index_start+1, len(rows)):
+            if rows[i] == []:
+                index_location = i
+                break
+        return index_location
+    
     '''get the hotspot data from text file'''
-    def get_hotspot_list(self,index_location,rows):
+    def get_hotspot_list(self,index_location,index_end_location,rows):
         overhead_list = []
         symbol_list = []
         kernel_list = []
-        for i in range(index_location + 1, index_location + 11):
+        for i in range(index_location + 1, index_end_location):
             if rows[i] == []:
                 break
             overhead = float(rows[i][0].replace(" ", "")[:-1])
@@ -37,9 +47,12 @@ class Obtain_Hotspot():
             symbol = symbol[symbol.rfind("]") + 1:]
             overhead_list.append(overhead)
             symbol_list.append(symbol)
-        self.top10_hotspots["overhead(%)"] = overhead_list
-        self.top10_hotspots["symbol"] = symbol_list
-        self.top10_hotspots["kernel"] = kernel_list
+        self.top10_hotspots["overhead(%)"] = overhead_list[:10]
+        self.top10_hotspots["symbol"] = symbol_list[:10]
+        self.top10_hotspots["kernel"] = kernel_list[:10]
+        self.all_hotspots["overhead(%)"] = overhead_list
+        self.all_hotspots["symbol"] = symbol_list
+        self.all_hotspots["kernel"] = kernel_list
 
     '''get the absolute runtime'''
     def obtain_absolute_runtime(self):
@@ -47,15 +60,29 @@ class Obtain_Hotspot():
         runtime=float(file.read())
         return runtime
     
-    '''return the hotspot list'''
-    def main(self):
+    '''return the top10 hotspots'''
+    def get_top10_hotspots(self):
         with open(self.record_path, 'r', encoding="utf-8") as csvfile:
             reader = csv.reader(csvfile)
             rows = [row for row in reader]
         index_location=self.get_hotspot_line_from_text(rows)
-        self.get_hotspot_list(index_location,rows)
+        index_end_location=self.get_hotspot_end_from_text(index_location,rows)
+        self.get_hotspot_list(index_location,index_end_location,rows)
         runtime=self.obtain_absolute_runtime()
         runtime_list=runtime*np.array(self.top10_hotspots["overhead(%)"])*0.01
         self.top10_hotspots["runtime(sec)"]= runtime_list
         return self.top10_hotspots
+
+    '''return all hotspots'''
+    def get_all_hotspots(self):
+        with open(self.record_path, 'r', encoding="utf-8") as csvfile:
+            reader = csv.reader(csvfile)
+            rows = [row for row in reader]
+        index_location=self.get_hotspot_line_from_text(rows)
+        index_end_location=self.get_hotspot_end_from_text(index_location,rows)
+        self.get_hotspot_list(index_location,index_end_location,rows)
+        runtime=self.obtain_absolute_runtime()
+        runtime_list=runtime*np.array(self.all_hotspots["overhead(%)"])*0.01
+        self.all_hotspots["runtime(sec)"]= runtime_list
+        return self.all_hotspots
 

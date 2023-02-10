@@ -3,7 +3,7 @@
       "benchpath":"Samples",
       "dynamoriolibpath": "Dynamorio_lib/AArch64",
       "outpath": "Outputs",
-      "dynamoriopath":"./DynamoRIO"
+      "dynamoriopath":"../DynamoRIO"
     },
     "application":{
       "application1":"BubbleSort1",
@@ -11,7 +11,7 @@
       "run_command1":"",
       "run_command2":""
     },
-    "subfile":"bubble210",
+    "subfile":"bubble",
     "sleep_second":1,
     "hotspot_selection_threshold":"90%",
     "runmode":{

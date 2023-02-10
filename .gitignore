@@ -1,6 +1,3 @@
-*.o
-*.d
-*.so
 *.pyc
 *.err
 Outputs
